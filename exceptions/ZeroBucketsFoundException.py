@@ -1,0 +1,2 @@
+class ZeroBucketsFoundException(Exception):
+    pass

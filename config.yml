@@ -1,0 +1,13 @@
+athena: # Athena configuration
+  database_name: default # The name of the database Athena uses for querying the trail bucket.
+  table_name: cloudtrail_logs_{table_name} # The table name of the trail bucket name
+  output_location: s3://aws-athena-query-results-{account_id}-{region}/ # The default output location bucket for the query results
+output:
+  excel_output_file: run_results_{trail}_{account_id}-{date}.xlsx # Excel results file
+  summary_output_file: run_summary_{trail}_{account_id}-{date}.txt # Summary text results file
+verify_https: True # Enable/ Disable verification of SSL certificates for HTTP requests
+account:
+    account_id: 0 # The account id - Keep it as 0 in case you don't know it
+    aws_access_key_id: # If you keep it empty, the script will look after the default AWS credentials stored in ~/.aws/credentials
+    aws_secret_access_key: # If you keep it empty, the script will look after the default AWS credentials stored in ~/.aws/credentials
+    aws_session_token: # If you keep it empty, the script will look after the default AWS credentials stored in ~/.aws/credentials

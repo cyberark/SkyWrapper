@@ -1,0 +1,2 @@
+class CloudTrailBucketMissingLogsTableException(Exception):
+    pass

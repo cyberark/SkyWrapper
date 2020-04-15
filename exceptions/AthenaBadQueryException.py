@@ -1,0 +1,2 @@
+class AthenaBadQueryException(Exception):
+    pass
