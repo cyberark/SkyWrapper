@@ -7,6 +7,7 @@ from handlers.CloudTrailHandler import CloudTrailHandler
 from exceptions.ZeroBucketsFoundException import ZeroBucketsFoundException
 from utilities.ArgParseUtilities import str2bool
 from utilities.FileUtilities import get_project_root
+import traceback
 import argparse
 import logging
 import os
@@ -95,6 +96,7 @@ def main():
         logger.warning("Exception details: {0}".format(e.args[0]))
         if "Unable to verify/create output bucket" in e.args[0]:
             logger.warning("Couldn't access the trail bucket. It might be insufficient permissions issue.")
+        logger.warning(traceback.format_exc())
 
 
 if __name__ == "__main__":
