@@ -26,7 +26,7 @@ class PrivilegedRolesScanHandler(object):
             if "Roles" in role_list_response:
                 roles_list = role_list_response
                 for role in roles_list["Roles"]:
-                    if self.__is_a_privileged_role(role) is True:
+                    if self.__is_a_privileged_role(role):
                         self.privileged_roles.append(role)
                     if self.__is_role_can_be_use_for_persistence(role):
                         self.refresh_privileged_roles.append(role)
