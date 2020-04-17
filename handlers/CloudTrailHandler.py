@@ -57,7 +57,7 @@ class CloudTrailHandler(object):
     def is_cloudtrail_logs_table_exists(self, trail_object):
         table_name = self.__config["athena"]["table_name"].format(table_name=trail_object.get_converted_s3_bucket_name_to_table_name())
         output_location = self.__config["athena"]["output_location"].format(account_id=self.__config["account"]["account_id"], region=trail_object.home_region)
-        check_cloudtrail_existing_query = "select * from {table_name} limit 1".format(table_name=table_name)
+        check_cloudtrail_existing_query = "select * from \"{table_name}\" limit 1".format(table_name=table_name)
         athena_handler = AthenaHandler(trail_object.home_region)
         try:
             athena_handler.fetchall_athena(check_cloudtrail_existing_query,

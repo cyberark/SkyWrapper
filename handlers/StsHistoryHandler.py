@@ -5,9 +5,9 @@ import logging
 from utilities.Boto3Utilities import instance_id_validator
 
 # Query Constants
-GET_ACCESS_TOKENS_FROM_STS_QUERY = """SELECT * FROM {0} WHERE useridentity.accesskeyid LIKE '%ASIA%' and requestparameters LIKE '%"roleArn"%' and responseelements LIKE '%"accessKeyId":"ASIA%' order by eventtime desc;"""
-GET_ORIGIN_ACCESS_TOKENS_FROM_STS_QUERY =  """SELECT * FROM {0} WHERE useridentity.accesskeyid LIKE '%AKIA%' and requestparameters LIKE '%"roleArn"%' And responseelements LIKE '%"accessKeyId":"ASIA%' order by eventtime desc;"""
-GET_LIVE_TEMPORARY_TOKENS_QUERY= """with temporary_tokens as (SELECT *, REPLACE(json_extract_scalar(responseelements, '$.credentials.expiration'), ',', '') AS ext FROM {0} WHERE responseelements LIKE '%"accessKeyId":"ASIA%' and requestparameters LIKE '%"roleArn"%' and eventTime > to_iso8601(current_timestamp - interval '36' hour) order by eventtime desc)
+GET_ACCESS_TOKENS_FROM_STS_QUERY = """SELECT * FROM \"{0}\" WHERE useridentity.accesskeyid LIKE '%ASIA%' and requestparameters LIKE '%"roleArn"%' and responseelements LIKE '%"accessKeyId":"ASIA%' order by eventtime desc;"""
+GET_ORIGIN_ACCESS_TOKENS_FROM_STS_QUERY =  """SELECT * FROM \"{0}\" WHERE useridentity.accesskeyid LIKE '%AKIA%' and requestparameters LIKE '%"roleArn"%' And responseelements LIKE '%"accessKeyId":"ASIA%' order by eventtime desc;"""
+GET_LIVE_TEMPORARY_TOKENS_QUERY= """with temporary_tokens as (SELECT *, REPLACE(json_extract_scalar(responseelements, '$.credentials.expiration'), ',', '') AS ext FROM \"{0}\" WHERE responseelements LIKE '%"accessKeyId":"ASIA%' and requestparameters LIKE '%"roleArn"%' and eventTime > to_iso8601(current_timestamp - interval '36' hour) order by eventtime desc)
 select * from temporary_tokens where date_parse(ext, '%b %e %Y %l:%i:%s %p')> date(current_timestamp)"""
 
 # constants for extraction of keys
@@ -69,7 +69,8 @@ class StsHistoryHandler(object):
 
     def flag_suspicious_tokens(self):
         self.__logger.info("[+] Examining the scraped tokens")
-        self.__logger.info("Has there been a token refresh process in the account? - {status}".format(status=(len(self.root_temporary_tokens) > 0)))
+        self.__logger.info("Has there been a token refresh process in the account according to the trail bucket? - {status}".
+                           format(status=(len(self.root_temporary_tokens) > 0)))
         # EC2 STS tokens which used for persistent
         ec2_refreshed_keys_counter = 0
 
